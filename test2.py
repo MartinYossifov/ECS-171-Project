@@ -21,11 +21,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, OrdinalEncoder
 from sklearn.compose import ColumnTransformer
+from joblib import dump, load
 import csv
 
 diabdata = pd.read_csv(r'C:\Users\jpsal\Documents\GitHub\ECS-171-Project\diabetes_dataset__2019.csv') # get absolute path or relative path, whatever works on your computer
 diabdata.dropna(subset = ['BMI', 'Sleep', 'SoundSleep'], inplace=True) #drops nan values from quantitative variables for now
 diabdata = diabdata.dropna(axis=0)
+diabdata = diabdata.drop(['Age','highBP','RegularMedicine','JunkFood','Stress','Pregancies','Pdiabetes','UriationFreq'],axis=1)
 diab_quant = diabdata[['BMI', 'Sleep', 'SoundSleep']] #the quantiative variables we want
 target = diabdata['Diabetic'] #the label we want to predict
 lab_encoder = LabelEncoder() #encode target labels with value between 0 and n_classes-1
@@ -59,30 +61,43 @@ def test():
         write.writerow(data2)
     XMLP = diabdata.drop('Diabetic', axis=1)
     yMLP = diabdata['Diabetic']
-    X_trainMLP, X_testMLP, y_trainMLP, y_testMLP = train_test_split(XMLP, yMLP, test_size=0.2, random_state=12)
 
-    cat_MLP = ['Gender', 'Family_Diabetes', 'PhysicallyActive', 'Smoking', 'Alcohol', 'JunkFood', 'BPLevel','Age','highBP','RegularMedicine','JunkFood','Stress','Pregancies','Pdiabetes','UriationFreq']
+    X_trainMLP, X_testMLP, y_trainMLP, y_testMLP = train_test_split(XMLP, yMLP, test_size=0.2, random_state=12)
+    cat_MLP = ['Gender', 'Family_Diabetes', 'PhysicallyActive', 'Smoking', 'Alcohol', 'JunkFood', 'BPLevel']
+    # cat_MLP = ['Gender', 'Family_Diabetes', 'PhysicallyActive', 'Smoking', 'Alcohol', 'JunkFood', 'BPLevel','Age','highBP','RegularMedicine','JunkFood','Stress','Pregancies','Pdiabetes','UriationFreq']
     num_MLP = ['BMI','Sleep','SoundSleep']
     #encode categorical variables and scale quantitative
     XMLP_preproc = pd.DataFrame(OrdinalEncoder().fit_transform(XMLP), columns=XMLP.columns)
+
     scaler = StandardScaler()
     nums = [col for col in XMLP_preproc.columns if col not in cat_MLP]
     scaler.fit(XMLP_preproc[nums])
     XMLP_preproc[nums] = scaler.transform(XMLP_preproc[nums])
     print(XMLP_preproc)
     #train-test 80-20
+    ordscaler = OrdinalEncoder()
+    ordscaler.fit_transform(XMLP)
     X_trainMLP, X_testMLP, y_trainMLP, y_testMLP = train_test_split(XMLP_preproc, yMLP, test_size=0.2, random_state=12)
     #using standard MLPClassifier activation and solver, as well as hidden layer sizes of 100 neurons for 2 layers
     mlp = MLPClassifier(hidden_layer_sizes = (18,18), activation = 'tanh', solver = 'sgd', random_state = 42, max_iter=1000, batch_size = 25)
 
     mlp.fit(X_trainMLP, y_trainMLP)
+    y_predMLP = mlp.predict(X_testMLP)
+    print(np.mean(y_predMLP == y_testMLP))
+
+
+
+    dump(scaler, 'std_scaler.bin', compress=True)
+    scaler=load('std_scaler.bin')
+
+    dump(ordscaler, 'ord', compress=True)
+    ordscaler=load('ord')
 
     tempdata = pd.read_csv('temp.csv')
-
-    XMLP_preproc = pd.DataFrame(OrdinalEncoder().fit_transform(tempdata), columns=tempdata.columns)
-    scaler = StandardScaler()
+    tempdata = tempdata.drop(['Age','highBP','RegularMedicine','JunkFood','Stress','Pregancies','Pdiabetes','UriationFreq'],axis=1)
+    XMLP_preproc = pd.DataFrame(ordscaler.transform(tempdata), columns=tempdata.columns)
     nums = [col for col in XMLP_preproc.columns if col not in cat_MLP]
-    scaler.fit(XMLP_preproc[nums])
+    scaler.transform(XMLP_preproc[nums])
     XMLP_preproc[nums] = scaler.transform(XMLP_preproc[nums])
     XMLP_preproc, X_whatever = train_test_split(XMLP_preproc, test_size=0.5, random_state=12)
     print(XMLP_preproc)
