@@ -24,7 +24,7 @@ from sklearn.compose import ColumnTransformer
 from joblib import dump, load
 import csv
 
-diabdata = pd.read_csv("/Users/danielmedina/personal/ECS-171-Project-1/static/diabetes_dataset__2019.csv") # get absolute path or relative path, whatever works on your computer
+diabdata = pd.read_csv("static/diabetes_dataset__2019.csv") # get absolute path or relative path, whatever works on your computer
 diabdata.dropna(subset = ['BMI', 'Sleep', 'SoundSleep'], inplace=True) #drops nan values from quantitative variables for now
 diabdata = diabdata.dropna(axis=0)
 diabdata = diabdata.drop(['Age','highBP','RegularMedicine','JunkFood','Stress','Pregancies','Pdiabetes','UriationFreq'],axis=1)
