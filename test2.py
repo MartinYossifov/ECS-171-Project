@@ -24,7 +24,7 @@ from sklearn.compose import ColumnTransformer
 from joblib import dump, load
 import csv
 
-diabdata = pd.read_csv(r'C:\Users\jpsal\Documents\GitHub\ECS-171-Project\diabetes_dataset__2019.csv') # get absolute path or relative path, whatever works on your computer
+diabdata = pd.read_csv("/Users/danielmedina/personal/ECS-171-Project-1/static/diabetes_dataset__2019.csv") # get absolute path or relative path, whatever works on your computer
 diabdata.dropna(subset = ['BMI', 'Sleep', 'SoundSleep'], inplace=True) #drops nan values from quantitative variables for now
 diabdata = diabdata.dropna(axis=0)
 diabdata = diabdata.drop(['Age','highBP','RegularMedicine','JunkFood','Stress','Pregancies','Pdiabetes','UriationFreq'],axis=1)
@@ -33,11 +33,12 @@ target = diabdata['Diabetic'] #the label we want to predict
 lab_encoder = LabelEncoder() #encode target labels with value between 0 and n_classes-1
 target = lab_encoder.fit_transform(target) #transform target lab encoded
 
-app = Flask(__name__, template_folder="C:/Users/jpsal/Documents/GitHub/ECS-171-Project") # get absolute path or relative path, whatever works on your computer
+app = Flask(__name__, template_folder=".") # get absolute path or relative path, whatever works on your computer
+app.static_folder = 'static'
 @app.route('/')
 def startup():
     print("uh")
-    return render_template('test2.html')
+    return render_template('templates/test2.html')
 
 @app.route("/whatever",methods=['POST','GET'])
 def test():
@@ -101,7 +102,13 @@ def test():
     XMLP_preproc[nums] = scaler.transform(XMLP_preproc[nums])
     XMLP_preproc, X_whatever = train_test_split(XMLP_preproc, test_size=0.5, random_state=12)
     print(XMLP_preproc)
-    return str(mlp.predict(XMLP_preproc))
+    prediction = str(mlp.predict(XMLP_preproc))
+
+    prediction = prediction.replace('[\'', '')
+    prediction = prediction.replace('\']', '')
+
+
+    return render_template('templates/test2.html', prediction = "Yes" if (prediction=="yes") else "No")
     
 
 if(__name__=='__main__'):

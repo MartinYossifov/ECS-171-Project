@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='test2.css') }}">	
+    <title>Diabetes Predictor</title>
+</head>	
+<body>
+    <div id="submititems">
+        <form action="whatever" method="GET">
+            <h2>Diabetes Predictor (Group 15)</h2>
+            <div class="containers">
+                <div class="container">
+
+                    <div>
+                        <h4>BMI</h4>
+                        <input class="input" type="number" value='0.00' step='0.1' name="bmi" id="bmi">
+                    </div>
+
+                    <div>
+                        <h4>Daily Sleep (Hrs)</h4>
+                        <input class="input" type="number" value='0.00' step='0.01' name="slp" id="slp">
+                    </div>
+
+                    <div>
+                        <h4>Daily Sound Sleep (Hrs)</h4>
+                        <input class="input" type="number" value='0.00' step='0.01' name="sslp" id="sslp">
+                    </div>
+                    
+                    <div class = "gender">
+                        <h4> Gender </h4>
+                        <div class="input-group">
+                            <input class="input" type="radio" name="g" id="g-male" value="Male"/>
+                            <label for="g-male">Male</label>
+                            <input class="input" type="radio" name="g" id="g-female" value="Female"/>
+                            <label for="g-female">Female</label>
+                        </div>
+                    </div>
+
+                    <div class = "family-history">
+                        <h4> Family History of Diabetes </h4>
+                        <div class="input-group">
+                            <input class="input" type="radio" name="fh" id="fh-yes" value="yes"/>
+                            <label for="fh-yes">Yes</label>
+                            <input class="input" type="radio" name="fh" id="fh-no" value="no"/>
+                            <label for="fh-no">No</label>
+                        </div>
+                    </div>
+
+                    <div class = "physically-active">
+                        <h4> Daily Physical Activity </h4>
+                        <div class="input-group">
+                            <input class="input" type="radio" name="pa" id="pa-morehr" value="one hr or more"/>
+                            <label for="pa-morehr"> &gt 1 Hour </label>
+                            <input class="input" type="radio" name="pa" id="pa-morehalf" value="more than half an hr"/>
+                            <label for="pa-morehalf"> &gt 30 Minutes </label>
+                            <input class="input" type="radio" name="pa" id="pa-lesshalf" value="less than half an hr"/>
+                            <label for="pa-lesshalf"> &lt 30 Minutes </label>
+                            <input class="input" type="radio" name="pa" id="pa-none" value="none"/>
+                            <label for="pa-none"> None </label>
+                        </div>
+                    </div>
+
+                    <div class = "smoking">
+                        <h4> Do You Smoke? </h4>
+                        <div class="input-group">
+                            <input class="input" type="radio" name="smk" id="smk-yes" value="yes"/>
+                            <label for="smk-yes"> Yes </label>
+                            <input class="input" type="radio" name="smk" id="smk-no" value="no"/>
+                            <label for="smk-no"> No </label>
+                        </div>
+                    </div>
+
+                    <div class = "alcohol">
+                        <h4> Do You Drink Alcohol? </h4>
+                        <div class="input-group">
+                            <input class="input" type="radio" name="alc" id="alc-yes" value="yes"/>
+                            <label for="alc-yes"> Yes </label>
+                            <input class="input" type="radio" name="alc" id="alc-no" value="no"/>
+                            <label for="alc-no"> No </label>
+                        </div>
+                    </div>
+
+                    <div class = "junk-food">
+                        <h4> Junk Food Consumption </h4>
+                        <div class="input-group">
+                            <input class="input-3" type="radio" name="jf" id="jf-occ" value="occasionally"/>
+                            <label for="jf-occ"> Occasionally </label>
+                            <input class="input-3" type="radio" name="jf" id="jf-oft" value="often"/>
+                            <label for="jf-oft"> Often </label>
+                            <input class="input-3" type="radio" name="jf" id="jf-voft" value="very often"/>
+                            <label for="jf-voft"> Very Often </label>
+                        </div>
+                    </div>
+
+                    <div class = "blood-pressure">
+                        <h4> Blood Pressure </h4>
+                        <div class="input-group">
+                            <input class="input-3" type="radio" name="bp" id="bp-low" value="low"/>
+                            <label for="bp-low"> Low </label>
+                            <input class="input-3" type="radio" name="bp" id="bp-norm" value="normal"/>
+                            <label for="bp-norm"> Normal </label>
+                            <input class="input-3" type="radio" name="bp" id="bp-high" value="high"/>
+                            <label for="bp-high"> High </label>
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+
+                <div class="pred-container">
+                    <div>
+                        <h4>Prediction: {{ prediction }}</h4>
+                    </div>
+        
+                    <button>Predict</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
