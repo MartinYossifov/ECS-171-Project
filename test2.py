@@ -80,8 +80,8 @@ def test():
     ordscaler.fit_transform(XMLP)
     X_trainMLP, X_testMLP, y_trainMLP, y_testMLP = train_test_split(XMLP_preproc, yMLP, test_size=0.2, random_state=12)
     #using standard MLPClassifier activation and solver, as well as hidden layer sizes of 100 neurons for 2 layers
-    mlp = MLPClassifier(hidden_layer_sizes = (18,18), activation = 'tanh', solver = 'sgd', random_state = 42, max_iter=1000, batch_size = 25)
-
+    #mlp = MLPClassifier(hidden_layer_sizes = (18,18), activation = 'tanh', solver = 'sgd', random_state = 42, max_iter=1000, batch_size = 25)
+    mlp = MLPClassifier(solver = 'adam', random_state = 42, activation = 'tanh', learning_rate_init = 0.01, batch_size = 75, hidden_layer_sizes = (20, 20), max_iter = 1000)
     mlp.fit(X_trainMLP, y_trainMLP)
     y_predMLP = mlp.predict(X_testMLP)
     print(np.mean(y_predMLP == y_testMLP))
