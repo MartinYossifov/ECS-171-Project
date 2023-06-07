@@ -38,7 +38,7 @@ app.static_folder = 'static'
 @app.route('/')
 def startup():
     # print("uh")
-    return render_template('templates/test2.html')
+    return render_template('templates/predict_temp.html')
 
 @app.route("/predict",methods=['POST','GET'])
 def test():
